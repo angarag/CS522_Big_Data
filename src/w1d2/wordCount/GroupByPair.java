@@ -1,4 +1,4 @@
-package com.mars.bd.w1d2;
+package w1d2.wordCount;
 
 import java.util.ArrayList;
 import java.util.List;

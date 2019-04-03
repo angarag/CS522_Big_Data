@@ -1,4 +1,4 @@
-package com.mars.bd.w1d2;
+package w1d2.wordCount;
 
 public class Pair<K extends Comparable<K>, V extends Comparable<V>> implements Comparable<Pair<K, V>> {
 	private K key; // key

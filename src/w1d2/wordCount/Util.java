@@ -1,4 +1,4 @@
-package com.mars.bd.w1d2;
+package w1d2.wordCount;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
