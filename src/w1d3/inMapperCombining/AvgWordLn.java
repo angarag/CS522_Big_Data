@@ -1,26 +1,26 @@
-package w1d3.wordCount.inMapperCombining;
+package w1d3.inMapperCombining;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import w1d2.wordCount.GroupByPair;
 import w1d2.wordCount.Pair;
-import w1d2.wordCount.Reducer;
 
-public class WordCountInMapperCombining {
+public class AvgWordLn {
 	int m;
 	int r;
-	List<Mapper> mappers;
+	List<Mapper_avgWordLn> mappers;
 	List<Reducer> reducers;
 	int[] nums;
 
-	public WordCountInMapperCombining(int m, int r) {
+	public AvgWordLn(int m, int r) {
 		this.m = m;
 		this.r = r;
-		this.mappers = new ArrayList<Mapper>(this.m);
+		this.mappers = new ArrayList<Mapper_avgWordLn>(this.m);
 		this.reducers = new ArrayList<Reducer>(this.r);
 		for (int i = 0; i < m; i++) {
-			this.mappers.add(new Mapper());
+			this.mappers.add(new Mapper_avgWordLn());
 		}
 		for (int i = 0; i < r; i++) {
 			this.reducers.add(new Reducer());
@@ -30,22 +30,16 @@ public class WordCountInMapperCombining {
 	}
 
 	public static void main(String[] args) {
-		WordCountInMapperCombining nameNode = new WordCountInMapperCombining(3, 4);
+		AvgWordLn nameNode = new AvgWordLn(4, 3);
 		List<String> strs = new ArrayList<>();
-		/*
-		 * strs.add("Given a text-file input123,\r\n" +
-		 * "1. The program will extract each \"word\" and form a key-value pair \r\n" +
-		 * "where the key is the \"word\" and value is integer one.  Note that your program \r\n"
-		 * + "should treat Cat and cat as the same word.\r\n" +
-		 * "2. Each pair is inserted into a List. 3. Sort the List using \"Collections\". \r\n"
-		 * + "This may involve writing a comparator for the pair class.\r\n" +
-		 * "4. Output the List\r\n" +
-		 * "5. Note that tokens such as input123, abc.txt,  \r\n" +
-		 * "a23bc and abc_ptr  are not words. However, key-value is two words.");
-		 */
-		strs.add("\"cat bat\" mat-pat mum.edu sat.\r\n" + "fat 'rat eat cat' mum_cs mat");
-		strs.add("bat-hat mat pat \"oat\r\n" + "hat rat mum_cs eat oat-pat");
-		strs.add("zat lat-cat pat jat.\r\n" + "hat rat. kat sat wat");
+		strs.add("Art is beautiful and life enhancing. However it pays very little. \n" + 
+				"Many artists have a hard life.");
+		strs.add("Sun is there every day. Moon comes every day. \n" + 
+				"Let us live every day as the best day so far.");
+		strs.add("Meditation is very important for the development of consciousness. \n" + 
+				"So let us meditate every day.");
+		strs.add("Earth is blue if you look from outer space. Mars is red. Moon is yellow. \n" + 
+				"Sun is white. What a wonderful world.");
 		for (int i = 0; i < nameNode.m; i++) {
 			System.out.println("Mapper " + i + " Input");
 			String input = strs.get(i);
@@ -57,8 +51,7 @@ public class WordCountInMapperCombining {
 			nameNode.mappers.get(i).printPairs();
 		}
 		for (int i = 0; i < nameNode.m; i++) {
-			int ri;
-			Pair temp = nameNode.mappers.get(i).emit();
+			GroupByPair temp = nameNode.mappers.get(i).emit();
 			while (temp != null) {
 				int reducer_id = nameNode.getPartition((String) temp.getKey());
 				System.out.println("Pairs sent from Mapper " + i + " Reducer " + reducer_id);
@@ -73,7 +66,7 @@ public class WordCountInMapperCombining {
 		}
 		for (int i = 0; i < nameNode.r; i++) {
 			System.out.println("Reducer " + i + " Output");
-			String emit = nameNode.reducers.get(i).emit();
+			Pair emit = nameNode.reducers.get(i).emit();
 			while (emit != null) {
 				System.out.println(emit);
 				emit = nameNode.reducers.get(i).emit();

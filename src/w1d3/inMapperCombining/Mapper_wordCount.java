@@ -1,4 +1,4 @@
-package w1d3.wordCount.inMapperCombining;
+package w1d3.inMapperCombining;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,14 +12,13 @@ import w1d2.wordCount.GroupByPair;
 import w1d2.wordCount.Pair;
 import w1d2.wordCount.Util;
 
-public class Mapper_avg_word_length {
-	HashMap<String, Pair> list;
-
-	public Mapper_avg_word_length() {
+public class Mapper_wordCount {
+	HashMap<String, Integer> list;
+	public Mapper_wordCount() {
 		this.list = new HashMap<>();
 	}
 
-	public Mapper_avg_word_length(String line) {
+	public Mapper_wordCount(String line) {
 		this.generatePairsFromString(line);
 	}
 
@@ -33,7 +32,7 @@ public class Mapper_avg_word_length {
 	}
 
 	public static void main(String[] args) {
-		Mapper_avg_word_length mapper = new Mapper_avg_word_length();
+		Mapper_wordCount mapper = new Mapper_wordCount();
 		mapper.generatePairsFromFile(Util.FILENAME);
 		System.out.println("Printing the Key-Value pairs:");
 		mapper.printPairs();
@@ -59,7 +58,6 @@ public class Mapper_avg_word_length {
 	private void helper(List<String> words) {
 		List<Pair> lp = words.stream().map(w -> new Pair(w, 1)).collect(Collectors.toList());
 		for (Pair p : lp) {
-			char c = new String((String)p.getKey()).charAt(0);
 			if (this.list.containsKey(p.getKey())) {
 				this.list.put((String) p.getKey(), (int) this.list.get(p.getKey()) + (int) p.getValue());
 			} else {

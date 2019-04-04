@@ -12,7 +12,11 @@ implements Comparable<GroupByPair<K,V>>{
 		this.key = k;
 		this.values=new ArrayList<>();
 	}
-
+	//Added for W1D3 - Avg word lenght problem
+	public GroupByPair(K k, List<V> values) {
+		this.key = k;
+		this.values=values;
+	}
 	public K getKey() {
 		return key;
 	}

@@ -26,7 +26,11 @@ public class Reducer {
 		this.plist.add(p);
 		this.glist = this.getGroupPairs(this.plist);
 	}
+	//added for W1D3 - AvgWordLength problem
 
+	public void receivePair(GroupByPair p) {
+		this.glist.add(p);
+	}
 	public static void main(String[] args) {
 		Mapper mapper=new Mapper();
 		mapper.generatePairsFromFile(Util.FILENAME);
