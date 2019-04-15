@@ -31,7 +31,9 @@ public class Pair<K extends Comparable<K>, V extends Comparable<V>> implements C
 
 	public int compareTo(Pair<K, V> that) {
 		int cmp = this.key.compareTo(that.key);
-		return cmp;
+		if(cmp!=0)
+			return cmp;
+		return this.value.compareTo(that.value);
 	}
 
 	@Override
