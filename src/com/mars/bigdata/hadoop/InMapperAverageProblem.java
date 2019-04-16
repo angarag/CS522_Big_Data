@@ -16,59 +16,62 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-public class InMapperWordCount {
+public class InMapperAverageProblem {
 
-  public static class TokenizerMapper
-       extends Mapper<Object, Text, Text, IntWritable>{
-   // private HashMap<>
+  public static class TokenizerMapper extends Mapper<Object, Text, Text, DoubleWritable>{
 
-    public void map(Object key, Text value, Context context
-                    ) throws IOException, InterruptedException {
-      StringTokenizer itr = new StringTokenizer(value.toString());
+    private Text word = new Text();
 
+    public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
       MapWritable myMap = new MapWritable();
-      while (itr.hasMoreTokens()) {
-    	  String ikey = itr.nextToken();
-    	  Text itext= new Text(ikey);
+  	
+	  String lines[] = value.toString().split("\\r?\\n");
+  for (String line: lines) {
+			 String first =Util.giveMeFirstQuantity(line);
+			 Double last = Util.giveMeLastQuantity(line);
+			 if(first==null || last==null)
+				 continue;
+    	  Text itext= new Text(first);
     	  if(!myMap.containsKey(itext))
-    	  myMap.put(itext, new IntWritable(1));
+    	  myMap.put(itext, new DoubleWritable((last)));
     	  else {
-    		  int d = Integer.parseInt(myMap.get(itext).toString());
-        	  myMap.put(itext, new IntWritable(d++));    		  
+    		  double d = Double.parseDouble(myMap.get(itext).toString());
+        	  myMap.put(itext, new DoubleWritable(d++));    		  
     	  }
       }
       for(Writable w: myMap.keySet()) {
-    	  int wcount = Integer.parseInt(myMap.get(w).toString());
-    	  context.write((Text)w, new IntWritable(wcount));
+    	  double wcount = Double.parseDouble(myMap.get(w).toString());
+    	  context.write((Text)w, new DoubleWritable(wcount));
       }
     }
   }
 
-  public static class IntSumReducer
-       extends Reducer<Text,IntWritable,Text,IntWritable> {
-    private IntWritable result = new IntWritable();
+  public static class IntSumReducer extends Reducer<Text,DoubleWritable,Text,DoubleWritable> {
+    private DoubleWritable result = new DoubleWritable();
 
-    public void reduce(Text key, Iterable<IntWritable> values,
+    public void reduce(Text key, Iterable<DoubleWritable> values,
                        Context context
                        ) throws IOException, InterruptedException {
-      int sum = 0;
-      for (IntWritable val : values) {
+      double sum = 0;
+      double count = 0;
+      for (DoubleWritable val : values) {
         sum += val.get();
+        count++;
       }
-      result.set(sum);
+      result.set(sum/count);//calculating average
       context.write(key, result);
     }
   }
 
   public static void main(String[] args) throws Exception {
     Configuration conf = new Configuration();
-    Job job = Job.getInstance(conf, "word count");
-    job.setJarByClass(InMapperWordCount.class);
+    Job job = Job.getInstance(conf, "average problem with in-mapper combining approach");
+    job.setJarByClass(InMapperAverageProblem.class);
     job.setMapperClass(TokenizerMapper.class);
     job.setCombinerClass(IntSumReducer.class);
     job.setReducerClass(IntSumReducer.class);
     job.setOutputKeyClass(Text.class);
-    job.setOutputValueClass(IntWritable.class);
+    job.setOutputValueClass(DoubleWritable.class);
     FileInputFormat.addInputPath(job, new Path(args[0]));
     FileOutputFormat.setOutputPath(job, new Path(args[1]));
     System.exit(job.waitForCompletion(true) ? 0 : 1);
