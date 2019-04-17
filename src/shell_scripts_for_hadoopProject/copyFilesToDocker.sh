@@ -7,7 +7,7 @@ INPUT=$2
 if [ $# -eq 0 ]
   then
     INPUT=input1
-    JAR_NAME=WordCount
+    JAR_NAME=Hadoop
 fi
 
 docker cp $JAR_NAME.jar $CONTAINER:/usr/local/hadoop
