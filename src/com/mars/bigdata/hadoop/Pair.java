@@ -50,11 +50,12 @@ public class Pair {
 			for (DoubleWritable val : values) {
 				s += val.get();
 			}
-			System.out.println(key + "=" + Arrays.toString(pair) + " sum:" + s + " v of pair:" + pair_char);
 			if (pair.length > 1 && pair[1] != null && pair[1].equals(pair_char)) {
 				sum = s;
-			} else
-				context.write(key, new DoubleWritable(s / sum));
+			} 
+			if(sum!=0)
+				context.write(key, new DoubleWritable(s/sum*1.0));
+			System.out.println(key + "=" + Arrays.toString(pair) + " sum:" + sum + " s:"+s+" v of pair:" + pair_char);
 			// Text itext = new Text(pair[0]);
 			// if (pair.length > 1 && pair[1] != null) {
 			// if (!myMap.containsKey(key))
