@@ -1,4 +1,4 @@
-package com.mars.bigdata.hadoop;
+package hadoop.bigdata.mars;
 
 import java.io.IOException;
 import java.util.StringTokenizer;
@@ -6,25 +6,37 @@ import java.util.StringTokenizer;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-public class WordCount {
+public class InMapperWordCount {
 
 	public static class TokenizerMapper extends Mapper<Object, Text, Text, IntWritable> {
-
-		private final static IntWritable one = new IntWritable(1);
-		private Text word = new Text();
+		// private HashMap<>
 
 		public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
 			StringTokenizer itr = new StringTokenizer(value.toString());
+
+			MapWritable myMap = new MapWritable();
 			while (itr.hasMoreTokens()) {
-				word.set(itr.nextToken());
-				context.write(word, one);
+				String ikey = itr.nextToken();
+				Text itext = new Text(ikey);
+				if (!myMap.containsKey(itext))
+					myMap.put(itext, new IntWritable(1));
+				else {
+					int d = Integer.parseInt(myMap.get(itext).toString());
+					myMap.put(itext, new IntWritable(d++));
+				}
+			}
+			for (Writable w : myMap.keySet()) {
+				int wcount = Integer.parseInt(myMap.get(w).toString());
+				context.write((Text) w, new IntWritable(wcount));
 			}
 		}
 	}
@@ -46,7 +58,7 @@ public class WordCount {
 	public static void main(String[] args) throws Exception {
 		Configuration conf = new Configuration();
 		Job job = Job.getInstance(conf, "word count");
-		job.setJarByClass(WordCount.class);
+		job.setJarByClass(InMapperWordCount.class);
 		job.setMapperClass(TokenizerMapper.class);
 		job.setCombinerClass(IntSumReducer.class);
 		job.setReducerClass(IntSumReducer.class);

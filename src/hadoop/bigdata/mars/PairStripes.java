@@ -1,4 +1,4 @@
-package com.mars.bigdata.hadoop;
+package hadoop.bigdata.mars;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -51,10 +51,11 @@ public class PairStripes {
 
 		@Override
 		protected void cleanup(Context context) throws IOException, InterruptedException {
-			System.out.println("Emitting the hashmap of the last key:	"+prev_key_u);
+			System.out.println("Emitting the hashmap of the last key:	" + prev_key_u);
 			context.write(new Text(prev_key_u), myMap);
-			
+
 		}
+
 		// Key is in tuple format: (u,v)
 		public void reduce(Text key, Iterable<MapWritable> values, Context context)
 				throws IOException, InterruptedException {
