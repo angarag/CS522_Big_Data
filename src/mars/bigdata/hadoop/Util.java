@@ -1,4 +1,4 @@
-package hadoop.bigdata.mars;
+package mars.bigdata.hadoop;
 
 import java.util.ArrayList;
 import java.util.Arrays;

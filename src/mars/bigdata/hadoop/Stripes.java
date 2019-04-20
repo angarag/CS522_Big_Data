@@ -1,4 +1,4 @@
-package hadoop.bigdata.mars;
+package mars.bigdata.hadoop;
 
 import java.io.IOException;
 import org.apache.hadoop.conf.Configuration;
