@@ -50,12 +50,19 @@ Here is the program environments:
 
 This is a generic program to read any CSV file and find the mean and variance with the bootstrapping technique.  
 In order to run this scala object, we need to pass input arguments in the below format: 
-#1 should be the file URL,  
-#2 = category column name, 
-#3 = value column name, 
+
+the input argument #1 should be the file URL
+
+#2 = category column name
+
+#3 = value column name
+
 #4 = the position of the category name (index starts from 0) 
+
 #5 = the position of the value name 
+
 #6 = fraction rate 
+
 #7 = the number of repeats for each category 
 
 A sample run:
