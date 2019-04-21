@@ -3,8 +3,8 @@ Here you can find my assignments and group projects for the Big Data course taug
 ## Technology
 MapReduce, Hadoop, Spark, SparkSQL, Scala
 
-## How to run Hadoop project
-The followings are used in this project:
+## The program environments for the Hadoop project
+The following environments are used in this project:
 * Docker version: v18
 * Hadoop image for docker: https://hub.docker.com/r/sequenceiq/hadoop-docker
 * Eclipse (for Scala) as IDE:
@@ -44,4 +44,22 @@ Please note that I have overrode the cleanup method for inMapperAverageProblem a
 I emitted hashmaps for the mentioned algorithms above. So the output is not human-readable. You may want to look at the stdout log files. 
 
 ## How to run Spark project
+Here is the program environments:
+* Spark version: v2.3.3 (comes with Scale version 2.11.12) 
+* Eclipse (for Scala) as IDE (http://scala-org/download/sdk.html)
+this is a generic program to read any CSV file and find the mean and variance with the bootstrapping technique.  
+In order to run this scala object, we need to pass input arguments in the below format: 
+#1 should be the file URL,  
+#2 = category column name, 
+#3 = value column name, 
+#4 = the position of the category name (index starts from 0) 
+#5 = the position of the value name 
+#6 = fraction rate 
+#7 = the number of repeats for each category 
+
+A sample run:
+```bash
+chickwts.csv feed weight 2 1 .25 5
+```
+
 
