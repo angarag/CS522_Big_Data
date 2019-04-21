@@ -47,7 +47,8 @@ I emitted hashmaps for the mentioned algorithms above. So the output is not huma
 Here is the program environments:
 * Spark version: v2.3.3 (comes with Scale version 2.11.12) 
 * Eclipse (for Scala) as IDE (http://scala-org/download/sdk.html)
-this is a generic program to read any CSV file and find the mean and variance with the bootstrapping technique.  
+
+This is a generic program to read any CSV file and find the mean and variance with the bootstrapping technique.  
 In order to run this scala object, we need to pass input arguments in the below format: 
 #1 should be the file URL,  
 #2 = category column name, 
